@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  fullName    String
+  phoneNumber String    @unique
+  email       String?   @unique
+  password    String
+  status      String
+  createdAt   DateTime  @default(now())
+  groups      Group[]
+  posts       Post[]
+  comments    Comment[]
+}
+
+model Group {
+  id          Int      @id @default(autoincrement())
+  name        String
+  tags        String
+  description String?
+  createdAt   DateTime @default(now())
+  user        User[]
+  posts       Post[]
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  likes       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  group       Group     @relation(fields: [groupId], references: [id])
+  comments    Comment[]
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+  groupId     Int
+}
+
+model Comment {
+  id     Int    @id @default(autoincrement())
+  text   String
+  likes  Int    @default(0)
+  user   User   @relation(fields: [userId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id])
+  userId Int
+  postId Int
+}
