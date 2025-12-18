@@ -10,7 +10,7 @@ export async function createPost(
   groupId: number,
   title: string,
   description: string = ""
-): Promise<Post | null> {
+): Promise<Post> {
   try {
     const user = await findUserById(userId)
     if (!user) {
@@ -34,8 +34,8 @@ export async function createPost(
     return newPost
   } catch (e) {
     if (e instanceof Error) throw e
-    console.error(e)
-    return null
+    throw new Error(PostNotFoundErrorMessage)
+
   }
 }
 

@@ -8,7 +8,7 @@ export async function createGroup(
   name: string,
   tags: string,
   description: string | null = null
-): Promise<Group | null> {
+): Promise<Group> {
   try {
     return await prisma.group.create({
       data: {

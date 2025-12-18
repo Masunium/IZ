@@ -13,7 +13,7 @@ export async function createUser(
     password: string,
     email: string = "",
     status: Status = "Offline"
-): Promise<User | null> {
+): Promise<User> {
     try {
         return await prisma.user.create({
         data: {

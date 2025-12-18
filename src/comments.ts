@@ -10,7 +10,7 @@ export async function createComment(
   userId: number,
   postId: number,
   text: string
-): Promise<Comment | null> {
+): Promise<Comment> {
   try {
     const user = await findUserById(userId)
     if (!user) throw new Error(UserNotFoundErrorMessage)
@@ -29,8 +29,7 @@ export async function createComment(
     return newComment
   } catch (e) {
     if (e instanceof Error) throw e
-    console.error(e)
-    return null
+    throw new Error("Не удалось создать комментарий")
   }
 }
 
